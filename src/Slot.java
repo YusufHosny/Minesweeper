@@ -49,7 +49,11 @@ public class Slot {
     public void sweep() {
         // if slot is already checked do nothing
         // if the game is done do nothing
-        if(checked || gui.isDone()) { return; }
+        if(checked || gui.isDone()) {
+            return;
+        } else if (board.isFirstSweep()) {
+            board.setFirstSweep(false);
+        }
 
         // if slot is a mine end game
         if(mine) {

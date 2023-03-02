@@ -2,9 +2,14 @@ import java.util.Random;
 
 public class Board {
     private final Slot[][] slots;
+
+    private boolean firstSweep;
     private MinesweeperGui gui;
 
     Board(int dimensionY, int dimensionX, int mineCount) {
+        // first automatically set to true
+        firstSweep = true;
+
         // initialize slot array
         slots = new Slot[dimensionY][dimensionX];
 
@@ -56,6 +61,10 @@ public class Board {
 
     }
 
+    public MinesweeperGui getGui() {
+        return gui;
+    }
+
     public void setGUI(MinesweeperGui gui) {
         this.gui = gui;
         for(Slot[] slotRow: slots) {
@@ -99,5 +108,11 @@ public class Board {
         }
     }
 
+    public void setFirstSweep(boolean firstSweep) {
+        this.firstSweep = firstSweep;
+    }
 
+    public boolean isFirstSweep() {
+        return firstSweep;
+    }
 }

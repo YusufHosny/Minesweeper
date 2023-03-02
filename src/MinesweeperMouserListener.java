@@ -5,9 +5,12 @@ import java.awt.event.MouseListener;
 public class MinesweeperMouserListener extends MouseAdapter {
 
     private final int[] indices;
-    private final Board board;
+    private Board board;
+
+    private MinesweeperGui gui;
 
     MinesweeperMouserListener(int y, int x, Board board) {
+        this.gui = board.getGui();
         indices = new int[]{y, x};
         this.board = board;
     }
@@ -18,6 +21,11 @@ public class MinesweeperMouserListener extends MouseAdapter {
         if(buttonPressed == 1) {
             Slot slot = board.getSlot(indices);
             if(!slot.isFlag()) {
+                while(board.isFirstSweep() && slot.isMine()) {
+                    gui.randomizeBoard();
+                    board = gui.getBoard();
+                    slot = board.getSlot(indices);
+                }
                 slot.sweep();
             }
         }

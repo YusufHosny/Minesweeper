@@ -18,8 +18,8 @@ class MinesweeperGui extends JFrame{
         super(title);
 
         // set default size and mine count
-        currentXSize = 9;
-        currentYSize = 9;
+        currentXSize = 8;
+        currentYSize = 8;
         currentMineCount = 10;
 
         // add the default icons
@@ -44,15 +44,32 @@ class MinesweeperGui extends JFrame{
         mb.add(playMenu);
         mb.add(settingsMenu);
 
-        JMenuItem mineNumberEditor = new JMenuItem("Number of Mines");
-        mineNumberEditor.addActionListener(e -> MinesweeperMenuListeners.mineNumberEditor(this));
-        JMenuItem boardSizeEditor = new JMenuItem("Board Size");
-        boardSizeEditor.addActionListener(e -> MinesweeperMenuListeners.boardSizeEditor(this));
-        settingsMenu.add(mineNumberEditor);
-        settingsMenu.add(boardSizeEditor);
+        JMenuItem difficultyEditor = new JMenuItem("Difficulty");
+        JMenuItem easy = new JMenuItem("Easy");
+        JMenuItem medium = new JMenuItem("Medium");
+        JMenuItem hard = new JMenuItem("Hard");
+        difficultyEditor.add(easy);
+        difficultyEditor.add(medium);
+        difficultyEditor.add(hard);
+
+        easy.addActionListener(e -> {
+            setBoardSize(8,8);
+            setBoardMineCount(10);
+        });
+
+        medium.addActionListener(e -> {
+            setBoardSize(16,16);
+            setBoardMineCount(40);
+        });
+
+        hard.addActionListener(e -> {
+            setBoardSize(16,30);
+            setBoardMineCount(99);
+        });
+        settingsMenu.add(difficultyEditor);
 
         JMenuItem newGame = new JMenuItem("New Game");
-        newGame.addActionListener(e -> MinesweeperMenuListeners.newGame(this));
+        newGame.addActionListener(e -> this.generateMinesweeperGui());
         playMenu.add(newGame);
 
         centralArea = new JPanel();
@@ -76,6 +93,15 @@ class MinesweeperGui extends JFrame{
 
     public void setBoardMineCount(int mineCount) {
         currentMineCount = mineCount;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void randomizeBoard() {
+        this.board = new Board(currentYSize, currentXSize, currentMineCount);
+        board.setGUI(this);
     }
 
     public void setButtonIcon(int[] indices, int identifier) {
