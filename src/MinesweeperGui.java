@@ -23,15 +23,27 @@ class MinesweeperGui extends JFrame{
         currentMineCount = 10;
 
         // add the default icons
-        icons = new Icon[13];
-        icons[0] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\blank.png");
-        icons[9] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\mine.png");
-        icons[10] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\flag.png");
-        icons[11] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\checked.png");
-        icons[12] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\caught.png");
+        ImageIcon[] imageIcons = new ImageIcon[13];
+
+        imageIcons[0] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\blank.png");
+        imageIcons[9] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\mine.png");
+        imageIcons[10] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\flag.png");
+        imageIcons[11] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\checked.png");
+        imageIcons[12] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\caught.png");
         for(int i = 1; i < 9; i++) {
-            icons[i] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\" + i + ".png");
+            imageIcons[i] = new ImageIcon("C:\\Users\\Yusuf\\IdeaProjects\\Minesweeper\\icons\\icons\\" + i + ".png");
         }
+
+        icons = new Icon[13];
+        for(int i = 0; i < 13; i++) {
+            Image img = imageIcons[i].getImage();
+            img = img.getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            icons[i] = new ImageIcon(img);
+        }
+
+
+
+
 
         // initialize the Frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,17 +52,16 @@ class MinesweeperGui extends JFrame{
         // create a menu bar and add the selections
         JMenuBar mb = new JMenuBar();
         JMenu playMenu = new JMenu("Play");
-        JMenu settingsMenu = new JMenu("Settings");
+        JMenu difficulty = new JMenu("Difficulty");
         mb.add(playMenu);
-        mb.add(settingsMenu);
+        mb.add(difficulty);
 
-        JMenuItem difficultyEditor = new JMenuItem("Difficulty");
         JMenuItem easy = new JMenuItem("Easy");
         JMenuItem medium = new JMenuItem("Medium");
         JMenuItem hard = new JMenuItem("Hard");
-        difficultyEditor.add(easy);
-        difficultyEditor.add(medium);
-        difficultyEditor.add(hard);
+        difficulty.add(easy);
+        difficulty.add(medium);
+        difficulty.add(hard);
 
         easy.addActionListener(e -> {
             setBoardSize(8,8);
@@ -66,13 +77,14 @@ class MinesweeperGui extends JFrame{
             setBoardSize(16,30);
             setBoardMineCount(99);
         });
-        settingsMenu.add(difficultyEditor);
+
 
         JMenuItem newGame = new JMenuItem("New Game");
         newGame.addActionListener(e -> this.generateMinesweeperGui());
         playMenu.add(newGame);
 
         centralArea = new JPanel();
+        centralArea.setSize(600, 600);
 
         JButton playButton = new JButton("PLay");
         centralArea.add(playButton);
@@ -130,12 +142,14 @@ class MinesweeperGui extends JFrame{
                 JButton button = new JButton();
                 button.setIcon(icons[11]);
                 button.addMouseListener(new MinesweeperMouserListener(i, j, board));
+                button.setSize(25, 25);
                 buttonList.add(button);
                 minesweeperPanel.add(button);
             }
         }
         minesweeperPanel.setVisible(true);
         centralArea.add(BorderLayout.CENTER, minesweeperPanel);
+        centralArea.setSize(600, 600);
         refreshContainer(centralArea);
     }
 
